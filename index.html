@@ -11,10 +11,20 @@
     
     <header class="header__main"></header>
 
-    <main class="game__main"></main>
+    <form class="game__main">
+        <select class="game__input">
+            <option class="game__input--0" value="none" default></option>
+            <option class="game__input--1 game__colour--red"        value="red">Red</option>
+            <option class="game__input--2 game__colour--green"      value="green">Green</option>
+            <option class="game__input--3 game__colour--yellow"     value="blue">Yellow</option>
+            <option class="game__input--4 game__colour--blue"       value="blue">Blue</option>
+            <option class="game__input--5 game__colour--magenta"    value="magenta">Magenta</option>
+        </select>
+        <input class="game__submit" type="submit" disabled>
+    </form>
 
     <footer class="footer__main"></footer>
 
-    <script src="./"></script>
+    <script src="./app-main.js"></script>
 </body>
 </html>
