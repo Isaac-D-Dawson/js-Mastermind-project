@@ -11,7 +11,7 @@ const getRandomInt = (max = 1) => {
 }
 
 /**
- * an impure wrapperfunction for getRandomInt to keep array generation from become arbitrarily large.
+ * an impure wrapperfunction for getRandomInt to keep array generation from becoming arbitrarily long.
  * Hopefully there's a better way.
  * @param {iterable} inputArr 
  * @param {int} max 
@@ -30,8 +30,15 @@ const selectRandomItems = (inputArr, max=1) => {
 // let compGuess   = ["red", "green", "blue", "yellow"];
 // let playGuess   = ["red", "green", "blue", "yellow"];
 
-let compGuess   = selectRandomItems(colourOptions, 4);
-let playGuess   = [...compGuess];
+let compGuess   = selectRandomItems(colourOptions, 4);  //Generate computer's guess as four random items from our colours list.
+//I made this relatively flexible, should be able to handle increased or decreased ranges.
+
+let playGuess   = [...compGuess]; //current just globlising a default player guess, but later we'll get this as an input.
+
+
+//Document selectors:
+const gameInputs    = document.querySelectorAll(".game__input");    //gets all the input selectors
+
 
 
 /**
@@ -75,10 +82,17 @@ console.log(compareGuesses(compGuess, playGuess).every((current) => {
 //function isn't Pure, but it does work.
 // Might query some help on arry.every()
 
-//test for random generation:
-console.log(Math.floor(Math.random()*6))
-console.log([Math.floor(Math.random()*6) , Math.floor(Math.random()*6), Math.floor(Math.random()*6), Math.floor(Math.random()*6)])
-
-console.log([colourOptions[getRandomInt(colourOptions.length)]]);
 
 console.log(compGuess);
+
+//Test to see if we can assign options to the existing selects.
+gameInputs.forEach((gameInput) => {
+    gameInput.insertAdjacentHTML("beforeend", `
+    <option value="blue" class="only__option">Blue</option>`)
+})
+
+//further test to see if inserted HTML merges with existing to allow return calls.
+gameInputs[0].addEventListener("change", (event) => {
+    console.log(gameInputs[0].value);
+})
+//Surprise! it does. that's good.
