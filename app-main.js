@@ -1,7 +1,37 @@
 
+const colourOptions = ["red", "green", "blue", "yellow", "magenta"];
 
-let compGuess   = ["red", "green", "blue", "yellow"];
-let playGuess   = ["red", "yellow", "white", "green"];
+/**
+ * Returns a random in between 0 and the int provided(Exclusive)
+ * @param {int} max 
+ * @returns int
+ */
+const getRandomInt = (max = 1) => {
+    return Math.floor(Math.random() * max);
+}
+
+/**
+ * an impure wrapperfunction for getRandomInt to keep array generation from become arbitrarily large.
+ * Hopefully there's a better way.
+ * @param {iterable} inputArr 
+ * @param {int} max 
+ * @returns iterable
+ */
+const selectRandomItems = (inputArr, max=1) => {
+    const resultArr = []
+
+    for (let index = 0; index < max; index++) {
+        resultArr.push(inputArr[getRandomInt(inputArr.length)]);
+    }
+    return resultArr;
+}
+
+
+// let compGuess   = ["red", "green", "blue", "yellow"];
+// let playGuess   = ["red", "green", "blue", "yellow"];
+
+let compGuess   = selectRandomItems(colourOptions, 4);
+let playGuess   = [...compGuess];
 
 
 /**
@@ -25,7 +55,7 @@ const compareGuesses    = (com_guess, plr_guess) => {
     //Sure there's a better way of doing this but...
     for (let index = 0; index < com_guess.length; index++) {
         if (com_guess[index] === plr_guess[index]) {
-            resultArr.push("Match");
+            resultArr.push("match");
         } else if (com_guess.includes(plr_guess[index])) {
             resultArr.push("present");
         } else {
@@ -36,3 +66,19 @@ const compareGuesses    = (com_guess, plr_guess) => {
 }
 
 console.log(compareGuesses(compGuess, playGuess));
+
+
+//Testing every as a win condition checker.
+console.log(compareGuesses(compGuess, playGuess).every((current) => {
+    return current === "match"
+}));
+//function isn't Pure, but it does work.
+// Might query some help on arry.every()
+
+//test for random generation:
+console.log(Math.floor(Math.random()*6))
+console.log([Math.floor(Math.random()*6) , Math.floor(Math.random()*6), Math.floor(Math.random()*6), Math.floor(Math.random()*6)])
+
+console.log([colourOptions[getRandomInt(colourOptions.length)]]);
+
+console.log(compGuess);
