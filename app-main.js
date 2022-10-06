@@ -1,5 +1,7 @@
 
 const colourOptions = ["red", "green", "blue", "yellow", "magenta"];
+const guessLength   = 4;    //Sets the guess length used by the majority of the document.
+//This allows for dynamic updating of the page.
 
 /**
  * Returns a random in between 0 and the int provided(Exclusive)
@@ -30,16 +32,40 @@ const selectRandomItems = (inputArr, max=1) => {
 // let compGuess   = ["red", "green", "blue", "yellow"];
 // let playGuess   = ["red", "green", "blue", "yellow"];
 
-let compGuess   = selectRandomItems(colourOptions, 4);  //Generate computer's guess as four random items from our colours list.
+let compGuess   = selectRandomItems(colourOptions, guessLength);  //Generate computer's guess as four random items from our colours list.
 //I made this relatively flexible, should be able to handle increased or decreased ranges.
 
 let playGuess   = [...compGuess]; //current just globlising a default player guess, but later we'll get this as an input.
 
 
-//Document selectors:
+//Document selectors/constructors:
+const gameMain  = document.querySelector(".game__main");
+
+//Constructor for game inputs
+//Loop runs in reverse to ensure that options appear in ascending order, witht he submit button on the end.
+for (let index = guessLength; index > 0; index--) {
+    gameMain.insertAdjacentHTML("afterbegin", `
+<select class="game__input game__input--${index}">
+    <option class="" value="none" default></option>
+</select>`)
+}
+
 const gameInputs    = document.querySelectorAll(".game__input");    //gets all the input selectors
 
+//Test to see if we can assign options to the existing selects.
+gameInputs.forEach((gameInput) => {
+    gameInput.insertAdjacentHTML("beforeend", `
+    <option value="blue" class="only__option">Blue</option>`)
+    gameInput.addEventListener("change", (event) => {
+        console.log(gameInput.value);
+    })
+})
 
+//further test to see if inserted HTML merges with existing to allow return calls.
+// gameInputs[0].addEventListener("change", (event) => {
+//     console.log(gameInputs[0].value);
+// })
+//Surprise! it does. that's good.
 
 /**
  * takes in two iterables of equal length and returns an iterable containing data about the seocnd list compared to the first.
@@ -85,14 +111,3 @@ console.log(compareGuesses(compGuess, playGuess).every((current) => {
 
 console.log(compGuess);
 
-//Test to see if we can assign options to the existing selects.
-gameInputs.forEach((gameInput) => {
-    gameInput.insertAdjacentHTML("beforeend", `
-    <option value="blue" class="only__option">Blue</option>`)
-})
-
-//further test to see if inserted HTML merges with existing to allow return calls.
-gameInputs[0].addEventListener("change", (event) => {
-    console.log(gameInputs[0].value);
-})
-//Surprise! it does. that's good.
