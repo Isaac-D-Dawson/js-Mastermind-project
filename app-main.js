@@ -53,7 +53,6 @@ const gameSubmit    = document.querySelector(".game__submit");
 for (let index = guessLength; index > 0; index--) {
     gameMain.insertAdjacentHTML("afterbegin", `
 <select class="game__input game__input--${index}">
-    <option class="" value="none"></option>
 </select>`)
 }
 
@@ -75,7 +74,7 @@ gameInputs.forEach((gameInput) => {
                     return item.value
                 }))
                 .every((input) => {
-                    return input !== "none";
+                    return colourOptions.includes(input);
                 })
         ) {
             gameSubmit.removeAttribute("disabled");
@@ -151,7 +150,7 @@ gameMain.addEventListener("submit", (event) => {
 
     gameOutput.insertAdjacentHTML("beforeend", `
 <div class="result__repeat"></div>
-<div class="result__checker">`
+<div class="result__checker"></div>`
     )
 
     //Assigning selectors for these.
@@ -178,8 +177,6 @@ gameMain.addEventListener("submit", (event) => {
     })) {
         //Execute winstate
     } else {
-        //Currently planned to be "Nothing", However I might look into pushing the user's correct guesses back into the inputs
-        //Reduce strain.
         //However, like multiple difficulties, that will follow on from getting game fully working.
     }
 })
