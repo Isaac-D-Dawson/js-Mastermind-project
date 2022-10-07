@@ -54,12 +54,16 @@ const gameInputs    = document.querySelectorAll(".game__input");    //gets all t
 
 //Test to see if we can assign options to the existing selects.
 gameInputs.forEach((gameInput) => {
-    gameInput.insertAdjacentHTML("beforeend", `
-    <option value="blue" class="only__option">Blue</option>`)
-    gameInput.addEventListener("change", (event) => {
-        console.log(gameInput.value);
+
+    colourOptions.forEach((colour) => {
+        gameInput.insertAdjacentHTML("beforeend", `
+<option value="${colour}" class="">${colour}</option>`);
     })
-})
+    gameInput.addEventListener("change", (event) => {
+        console.log(`${gameInput.classList} has been set to ${gameInput.value}`);
+    })
+
+}
 
 //further test to see if inserted HTML merges with existing to allow return calls.
 // gameInputs[0].addEventListener("change", (event) => {
