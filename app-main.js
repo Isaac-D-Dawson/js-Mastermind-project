@@ -39,7 +39,8 @@ let playGuess   = [...compGuess]; //current just globlising a default player gue
 
 
 //Document selectors/constructors:
-const gameMain  = document.querySelector(".game__main");
+const gameMain      = document.querySelector(".game__main");
+const gameSubmit    = document.querySelector(".game__submit");
 
 //Constructor for game inputs
 //Loop runs in reverse to ensure that options appear in ascending order, witht he submit button on the end.
@@ -61,9 +62,21 @@ gameInputs.forEach((gameInput) => {
     })
     gameInput.addEventListener("change", (event) => {
         console.log(`${gameInput.classList} has been set to ${gameInput.value}`);
+        if ([...gameInputs]
+                .map((item => {
+                    return item.value
+                }))
+                .every((input) => {
+                    return input !== "none";
+                })
+        ) {
+            gameSubmit.removeAttribute("disabled");
+        } else {
+            gameSubmit.setAttribute("disabled", "");    //Needs a value to assign, even if said flag doesn't take values >.<
+        }
     })
 
-}
+})
 
 //further test to see if inserted HTML merges with existing to allow return calls.
 // gameInputs[0].addEventListener("change", (event) => {
