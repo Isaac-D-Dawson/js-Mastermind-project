@@ -1,13 +1,4 @@
-
-const colourOptions = ["red", "green", "blue", "yellow", "magenta"];
-const guessLength   = 4;    //Sets the guess length used by the majority of the document.
-//This allows for dynamic updating of the page.
-
-const infoColours   = {
-    "match"     : "green",
-    "present"   : "yellow",
-    "wrong"     : "red"
-}
+//Function Declareations:
 
 /**
  * Returns a random in between 0 and the int provided(Exclusive)
@@ -34,63 +25,6 @@ const selectRandomItems = (inputArr, max=1) => {
     return resultArr;
 }
 
-
-// let compGuess   = ["red", "green", "blue", "yellow"];
-// let playGuess   = ["red", "green", "blue", "yellow"];
-
-let compGuess   = selectRandomItems(colourOptions, guessLength);  //Generate computer's guess as four random items from our colours list.
-//I made this relatively flexible, should be able to handle increased or decreased ranges.
-
-// let playGuess   = [...compGuess]; //current just globlising a default player guess, but later we'll get this as an input.
-
-
-//Document selectors/constructors:
-const gameMain      = document.querySelector(".game__main");
-const gameSubmit    = document.querySelector(".game__submit");
-
-//Constructor for game inputs
-//Loop runs in reverse to ensure that options appear in ascending order, witht he submit button on the end.
-for (let index = guessLength; index > 0; index--) {
-    gameMain.insertAdjacentHTML("afterbegin", `
-<select class="game__input game__input--${index}">
-</select>`)
-}
-
-const gameInputs    = document.querySelectorAll(".game__input");    //gets all the input selectors
-const gameOutput    = document.querySelector(".game__output");
-
-//Logic to ensure that user's answer can't be submitted unless it contains no "Blank" values.
-//Technically wouldn't break anything if they could, but would let them damage their win chances.
-gameInputs.forEach((gameInput) => {
-
-    colourOptions.forEach((colour) => {
-        gameInput.insertAdjacentHTML("beforeend", `
-<option value="${colour}" class="">${colour}</option>`);
-    })
-    gameInput.addEventListener("change", (event) => {
-        console.log(`${gameInput.classList} has been set to ${gameInput.value}`);
-        if ([...gameInputs]
-                .map((item => {
-                    return item.value
-                }))
-                .every((input) => {
-                    return colourOptions.includes(input);
-                })
-        ) {
-            gameSubmit.removeAttribute("disabled");
-        } else {
-            gameSubmit.setAttribute("disabled", "");    //Needs a value to assign, even if said flag doesn't take values >.<
-        }
-    })
-
-})
-
-//further test to see if inserted HTML merges with existing to allow return calls.
-// gameInputs[0].addEventListener("change", (event) => {
-//     console.log(gameInputs[0].value);
-// })
-//Surprise! it does. that's good.
-
 /**
  * takes in two iterables of equal length and returns an iterable containing data about the seocnd list compared to the first.
  * items present in both with the same index are tagged "match"
@@ -101,7 +35,7 @@ gameInputs.forEach((gameInput) => {
  * @returns iterable
  * @error   false
  */
-const compareGuesses    = (com_guess, plr_guess) => {
+ const compareGuesses    = (com_guess, plr_guess) => {
     if (com_guess.length != plr_guess.length) {
         console.error("Error, Guesses are not of equal length");
         return false;
@@ -122,30 +56,85 @@ const compareGuesses    = (com_guess, plr_guess) => {
     return resultArr;
 }
 
-// console.log(compareGuesses(compGuess, playGuess));
+const getValues = (inputArr) => {
+    return inputArr.map((input) => {
+        return input.value
+    })
+}
 
 
-//Testing every as a win condition checker.
-// console.log(compareGuesses(compGuess, playGuess).every((current) => {
-//     return current === "match"
-// }));
-//function isn't Pure, but it does work.
-// Might query some help on arry.every()
+    //Global variable assignments:
+
+const colourOptions = ["red", "green", "blue", "yellow", "magenta"];
+const guessLength   = 4;    //Sets the guess length used by the majority of the document.
+//This allows for dynamic updating of the page.
+
+const infoColours   = {
+    "match"     : "green",
+    "present"   : "yellow",
+    "wrong"     : "red",
+    "hidden"    : "grey"
+}
+
+let compGuess   = selectRandomItems(colourOptions, guessLength);  //Generate computer's guess as four random items from our colours list.
+//Could probably be a const? But if I ever make a non-refresh reset for this I want the dynamism
+
+let guessCount = 0; //Number of guesses taken.
 
 
+//Document selectors/constructors:
+
+const gameControls  = document.querySelector(".game__controls");
+const gameSubmit    = document.querySelector(".game__submit");
+
+//Constructor for game inputs
+//Loop runs in reverse to ensure that options appear in ascending order, witht he submit button on the end.
+for (let index = guessLength; index > 0; index--) {
+    gameControls.insertAdjacentHTML("afterbegin", `
+<select class="game__input game__input--${index}">
+</select>`)
+}
+
+const gameInputs    = document.querySelectorAll(".game__input");    //gets all the input selectors
+const gameOutput    = document.querySelector(".game__output");
+const gameGuess     = document.querySelectorAll("game__guess");
+
+
+//Logic to ensure that user's answer can't be submitted unless it contains a valid color.
+//Technically wouldn't break anything if the user could enter anything, but would let them damage their win chances.
+gameInputs.forEach((gameInput) => {
+
+    colourOptions.forEach((colour) => {
+        gameInput.insertAdjacentHTML("beforeend", `
+<option value="${colour}" class="">${colour}</option>`);
+    })
+    gameInput.addEventListener("change", () => {
+        console.log(`${gameInput.classList} has been set to ${gameInput.value}`);
+        if (getValues([...gameInputs])
+                .every((input) => {
+                    return colourOptions.includes(input);
+                })
+        ) {
+            gameSubmit.removeAttribute("disabled");
+        } else {
+            gameSubmit.setAttribute("disabled", "");    //Needs a value to assign, even if said flag doesn't take values >.<
+        }
+    })
+
+})
+
+//Temporary log for cheating developers:
 console.log(compGuess);
 
 //Main program logic:
 
-gameMain.addEventListener("submit", (event) => {
+//I should probably abstract this into a function? but for something I'm only doing once it seems kinda pointless?
+gameControls.addEventListener("submit", (event) => {
     event.preventDefault(); //Prevent the submit from refreshing the page.
     
 
     //Assign playerguess here- It's internal scope, so we don't need it anywhere else.
-    //Might wanna functionalise that map- it's used in the submitUnlock check.
-    let playGuess = [...gameInputs].map((item => {
-        return item.value
-    }))
+    let playGuess = getValues([...gameInputs]);
     
 
     gameOutput.insertAdjacentHTML("beforeend", `
@@ -154,13 +143,13 @@ gameMain.addEventListener("submit", (event) => {
     )
 
     //Assigning selectors for these.
+    //Can't asign these any earlier- they call on HTML not inserted yet, and their targets dynmamically update with each call.
     const playerguessReturn     = [...document.querySelectorAll(".result__repeat")].slice(-1)[0]//Get most recent only
     const playerguessChecker    = [...document.querySelectorAll(".result__checker")].slice(-1)[0]//Ditto.
-    //I'd just get [arry.length-1], but they aren't assigned yet, so improvising.
+    //I'd just get [array.length-1], but they aren't assigned yet, so improvising.
 
     //Return feedback
-    //currently this means logging it to the console, but it should be writing to the HTML as some kind of visual.
-    console.log(compareGuesses(compGuess, playGuess))
+    console.log(compareGuesses(compGuess, playGuess))   //temporary dev cheat.
     playGuess.forEach((guess) => {
         playerguessReturn.insertAdjacentHTML("beforeend", `
 <img src="./assets/colors/${guess}.jpg">`
@@ -171,12 +160,20 @@ gameMain.addEventListener("submit", (event) => {
 <img src="./assets/colors/${infoColours[result]}.jpg">`
         )
     })
+    //I shoudl probably also make those functions.
 
-    if (compareGuesses(compGuess, playGuess).every((guess) => {
-        return guess === "match";
+    console.log(compareGuesses(compGuess, playGuess).every((result) => {
+        return result === "match";
+    }))
+    if (compareGuesses(compGuess, playGuess).every((result) => {
+        return result === "match";
     })) {
-        //Execute winstate
-    } else {
+        alert("Test");
+        [...gameGuess].forEach((guessObj) => {
+            console.log("setting bottom of screen green")
+            guessObj.src = "./assets/colors/green.jpg"
+        })
+    // } else {
         //However, like multiple difficulties, that will follow on from getting game fully working.
     }
 })

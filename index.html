@@ -7,16 +7,27 @@
     <title>Mastermind!</title>
     <link rel="stylesheet" href="./styles/styles-main.css">
 </head>
-<body>
+<div>
     
     <header class="header__main"></header>
 
-    <form class="game__main">
-        
-        <input class="game__submit" type="submit" disabled>
-    </form>
+    <div class="game__area"></div>
+        <div class="game__main"></div>
+            <form class="game__controls">
+                
+                <input class="game__submit" type="submit">
+            </form>
 
-    <main class="game__output"></main>
+            <div class="game__output"></div>
+        </div>
+
+        <div class="game__guesses">
+            <img class="game__guess" src="./assets/colors/grey.jpg">
+            <img class="game__guess" src="./assets/colors/grey.jpg">
+            <img class="game__guess" src="./assets/colors/grey.jpg">
+            <img class="game__guess" src="./assets/colors/grey.jpg">
+        </div>
+    </div>
 
     <footer class="footer__main"></footer>
 
