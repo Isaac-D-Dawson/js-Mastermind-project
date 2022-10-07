@@ -35,7 +35,7 @@ const selectRandomItems = (inputArr, max=1) => {
 let compGuess   = selectRandomItems(colourOptions, guessLength);  //Generate computer's guess as four random items from our colours list.
 //I made this relatively flexible, should be able to handle increased or decreased ranges.
 
-let playGuess   = [...compGuess]; //current just globlising a default player guess, but later we'll get this as an input.
+// let playGuess   = [...compGuess]; //current just globlising a default player guess, but later we'll get this as an input.
 
 
 //Document selectors/constructors:
@@ -47,13 +47,14 @@ const gameSubmit    = document.querySelector(".game__submit");
 for (let index = guessLength; index > 0; index--) {
     gameMain.insertAdjacentHTML("afterbegin", `
 <select class="game__input game__input--${index}">
-    <option class="" value="none" default></option>
+    <option class="" value="none"></option>
 </select>`)
 }
 
 const gameInputs    = document.querySelectorAll(".game__input");    //gets all the input selectors
 
-//Test to see if we can assign options to the existing selects.
+//Logic to ensure that user's answer can't be submitted unless it contains no "Blank" values.
+//Technically wouldn't break anything if they could, but would let them damage their win chances.
 gameInputs.forEach((gameInput) => {
 
     colourOptions.forEach((colour) => {
@@ -115,16 +116,41 @@ const compareGuesses    = (com_guess, plr_guess) => {
     return resultArr;
 }
 
-console.log(compareGuesses(compGuess, playGuess));
+// console.log(compareGuesses(compGuess, playGuess));
 
 
 //Testing every as a win condition checker.
-console.log(compareGuesses(compGuess, playGuess).every((current) => {
-    return current === "match"
-}));
+// console.log(compareGuesses(compGuess, playGuess).every((current) => {
+//     return current === "match"
+// }));
 //function isn't Pure, but it does work.
 // Might query some help on arry.every()
 
 
 console.log(compGuess);
 
+//Main program logic:
+
+gameMain.addEventListener("submit", (event) => {
+    event.preventDefault(); //Prevent the submit from refreshing the page.
+    
+
+    //Assign playerguess here- It's internal scope, so we don't need it anywhere else.
+    //Might wanna functionalise that map- it's used in the submitUnlock check.
+    let playGuess = [...gameInputs].map((item => {
+        return item.value
+    }))
+    
+    //Return feedback
+    //currently this means logging it to the console, but it should be writing to the HTML as some kind of visual.
+    console.log(compareGuesses(compGuess, playGuess))
+    if (compareGuesses(compGuess, playGuess).every((guess) => {
+        return guess === "match";
+    })) {
+        //Execute winstate
+    } else {
+        //Currently planned to be "Nothing", However I might look into pushing the user's correct guesses back into the inputs
+        //Reduce strain.
+        //However, like multiple difficulties, that will follow on from getting game fully working.
+    }
+})
