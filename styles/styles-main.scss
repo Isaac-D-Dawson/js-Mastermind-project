@@ -7,8 +7,10 @@
     justify-content: space-between;
 
     img{
-        min-width: 50px;
-        height: 50px;
+        height:20vw;
+        width: 20vw;
+
+        border: 2px solid black;
     }
 }
 .result__checker {
@@ -18,7 +20,9 @@
     justify-content: space-between;
 
     img{
-        max-width: 50px;
-        height: 25px;
+        width: 20vw;
+        height: 10vw;
+
+        border: 2px solid black;
     }
 }
