@@ -3,6 +3,12 @@ const colourOptions = ["red", "green", "blue", "yellow", "magenta"];
 const guessLength   = 4;    //Sets the guess length used by the majority of the document.
 //This allows for dynamic updating of the page.
 
+const infoColours   = {
+    "match"     : "green",
+    "present"   : "yellow",
+    "wrong"     : "red"
+}
+
 /**
  * Returns a random in between 0 and the int provided(Exclusive)
  * @param {int} max 
@@ -52,6 +58,7 @@ for (let index = guessLength; index > 0; index--) {
 }
 
 const gameInputs    = document.querySelectorAll(".game__input");    //gets all the input selectors
+const gameOutput    = document.querySelector(".game__output");
 
 //Logic to ensure that user's answer can't be submitted unless it contains no "Blank" values.
 //Technically wouldn't break anything if they could, but would let them damage their win chances.
@@ -141,9 +148,31 @@ gameMain.addEventListener("submit", (event) => {
         return item.value
     }))
     
+
+    gameOutput.insertAdjacentHTML("beforeend", `
+<div class="result__repeat"></div>
+<div class="result__checker">`
+    )
+
+    //Assigning selectors for these.
+    const playerguessReturn     = [...document.querySelectorAll(".result__repeat")].slice(-1)[0]//Get most recent only
+    const playerguessChecker    = [...document.querySelectorAll(".result__checker")].slice(-1)[0]//Ditto.
+    //I'd just get [arry.length-1], but they aren't assigned yet, so improvising.
+
     //Return feedback
     //currently this means logging it to the console, but it should be writing to the HTML as some kind of visual.
     console.log(compareGuesses(compGuess, playGuess))
+    playGuess.forEach((guess) => {
+        playerguessReturn.insertAdjacentHTML("beforeend", `
+<img src="./assets/colors/${guess}.jpg">`
+        )
+    })
+    compareGuesses(compGuess, playGuess).forEach((result) => {
+        playerguessChecker.insertAdjacentHTML("beforeend", `
+<img src="./assets/colors/${infoColours[result]}.jpg">`
+        )
+    })
+
     if (compareGuesses(compGuess, playGuess).every((guess) => {
         return guess === "match";
     })) {
