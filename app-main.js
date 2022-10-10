@@ -97,7 +97,7 @@ for (let index = guessLength; index > 0; index--) {
 
 const gameInputs    = document.querySelectorAll(".game__input");    //gets all the input selectors
 const gameOutput    = document.querySelector(".game__output");
-const gameGuess     = document.querySelectorAll("game__guess");
+const gameGuess     = document.querySelectorAll(".game__guess");
 
 
 //Logic to ensure that user's answer can't be submitted unless it contains a valid color.
@@ -169,9 +169,9 @@ gameControls.addEventListener("submit", (event) => {
         return result === "match";
     })) {
         alert("Test");
-        [...gameGuess].forEach((guessObj) => {
+        gameGuess.forEach((guessImg) => {
             console.log("setting bottom of screen green")
-            guessObj.src = "./assets/colors/green.jpg"
+            guessImg.src = "./assets/colors/green.jpg"
         })
     // } else {
         //However, like multiple difficulties, that will follow on from getting game fully working.
