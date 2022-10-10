@@ -1,36 +1,66 @@
+$background__default : rgb(42, 42, 62);
 
 
-.result__repeat {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: nowrap;
-    justify-content: space-between;
-
-    img{
-        height:20vw;
-        width: 20vw;
-
-        border: 2px solid black;
-    }
-}
-.result__checker {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: nowrap;
-    justify-content: space-between;
-
-    img{
-        width: 20vw;
-        height: 10vw;
-
-        border: 2px solid black;
-    }
+header {
+    background-color: adjust-color($background__default, $lightness: 20%);
 }
 
-.game__guess {
+
+.game__area{
+    background-color: $background__default;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
     
-    height:20vw;
-    width: 20vw;
+    min-width: 100vw;
+    min-height: 100vh;
 
-    border: 2px solid black;
-}   
+    .result__repeat {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: nowrap;
+        justify-content: space-between;
+
+        min-width: 100vw;
+
+        img{
+            height:20vw;
+            width: 20vw;
+
+            border: 2px solid black;
+        }
+    }
+    .result__checker {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: nowrap;
+        justify-content: space-between;
+
+        min-width: 100vw;
+
+        img{
+            width: 20vw;
+            height: 10vw;
+
+            border: 2px solid black;
+        }
+    }
+
+    .game__guesses {
+        
+        display: flex;
+        flex-direction: row;
+        flex-wrap: nowrap;
+        justify-content: space-between;
+
+        min-width: 100vw;
+
+        img{
+            width: 20vw;
+            height: 20vw;
+
+            border: 2px solid black;
+        }   
+    }
+}

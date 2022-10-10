@@ -170,7 +170,6 @@ gameControls.addEventListener("submit", (event) => {
     })) {
         alert("Test");
         gameGuess.forEach((guessImg) => {
-            console.log("setting bottom of screen green")
             guessImg.src = "./assets/colors/green.jpg"
         })
     // } else {

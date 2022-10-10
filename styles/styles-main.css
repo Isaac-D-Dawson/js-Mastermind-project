@@ -1,29 +1,49 @@
-.result__repeat {
+header {
+  background-color: #53537b;
+}
+
+.game__area {
+  background-color: rgb(42, 42, 62);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  min-width: 100vw;
+  min-height: 100vh;
+}
+.game__area .result__repeat {
   display: flex;
   flex-direction: row;
   flex-wrap: nowrap;
   justify-content: space-between;
+  min-width: 100vw;
 }
-.result__repeat img {
+.game__area .result__repeat img {
   height: 20vw;
   width: 20vw;
   border: 2px solid black;
 }
-
-.result__checker {
+.game__area .result__checker {
   display: flex;
   flex-direction: row;
   flex-wrap: nowrap;
   justify-content: space-between;
+  min-width: 100vw;
 }
-.result__checker img {
+.game__area .result__checker img {
   width: 20vw;
   height: 10vw;
   border: 2px solid black;
 }
-
-.game__guess {
-  height: 20vw;
+.game__area .game__guesses {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: space-between;
+  min-width: 100vw;
+}
+.game__area .game__guesses img {
   width: 20vw;
+  height: 20vw;
   border: 2px solid black;
 }/*# sourceMappingURL=styles-main.css.map */
